@@ -6,8 +6,13 @@ using System.Collections;
 public class Tear : UnityPoolObject
 {
     public Rigidbody2D rb { get; private set; }
-    private float lifetime;
-    
+    private float _lifetime;
+    private int _damage;
+    [SerializeField]
+    private string _friendlyTag;
+    [SerializeField]
+    private string _enemyesTag;
+
     public override void Create()
     {
         base.Create();
@@ -16,24 +21,33 @@ public class Tear : UnityPoolObject
 
     public void SetLifetime(float time)
     {
-        lifetime = time; 
+        _lifetime = time;
         StartCoroutine(DestroyTear());
+    }
+
+    public void SetDmg(int dmg)
+    {
+        _damage = dmg;
     }
 
     private IEnumerator DestroyTear()
     {
-        yield return new WaitForSeconds(lifetime);
+        yield return new WaitForSeconds(_lifetime);
         OnPush();
         Push();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag=="Enemy")
+        if(collision.tag == _enemyesTag)
         {
-            //collision.GetComponent<Enemy>()
+            try
+            {
+                collision.GetComponent<Health>().ChangeValue(_damage);
+            }
+            catch { }
         }
-        if (collision.tag == "Tear" || collision.tag == "Player")
+        if (collision.tag == "Tear" || collision.tag == _friendlyTag)
         {
 
         }

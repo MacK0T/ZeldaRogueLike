@@ -18,25 +18,24 @@ public class Hero : MonoBehaviour
     private Animator _anim;
     private MoveController _moveCntr;
     private ShootController _shootCntr;
-    [SerializeField]
-    private float _shotSpeed;
-    [SerializeField]
-    private float _tearDelay;
+    private Health _health;
+    private HealthBar _healthUI;
 
-    private Health _health = null;
 
-    void Awake ()
+    void Awake()
     {
         _health = GetComponent<Health>();
         _anim = GetComponent<Animator>();
         _moveCntr = GetComponent<MoveController>();
         _shootCntr = GetComponent<ShootController>();
-        _shootCntr.Init(transform, _shotSpeed, _tearDelay);
         gameObject.AddComponent<UnityPoolManager>();
-	}
+        _healthUI = FindObjectOfType<Canvas>().GetComponent<GameUI>().healthBar;
+        _healthUI.SpawnHearts(_health.maxHealth, _health.health);
+        _health.onGetDamage += ChangeHealthUI;
+    }
 	
 
-	private void Update ()
+	private void Update()
     {
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -90,4 +89,8 @@ public class Hero : MonoBehaviour
         }
     }
 
+    private void ChangeHealthUI()
+    {
+        _healthUI.UpdateHealth(_health.health);
+    }
 }
