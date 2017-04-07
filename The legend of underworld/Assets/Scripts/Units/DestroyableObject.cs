@@ -18,19 +18,23 @@ public class DestroyableObject : MonoBehaviour
     {
         _renderer = GetComponent<SpriteRenderer>();
         _health = GetComponent<Health>();
-        _health.onGetDamage += ChangeSprite;
+        _health.onChanged += ChangeSprite;
     }
 
-    private void ChangeSprite()
+    private void ChangeSprite(int currentHealth, int delta)
     {
         for (int i = 0; _states.Length > i; i++)
         {
-            if (_health.health >= _statesHealth[i])
+            if (currentHealth >= _statesHealth[i])
             {
                 _renderer.sprite = _states[i];
                 break;
             }
         }
     }
-	
+
+    private void OnDestroy()
+    {
+        _health.onChanged -= ChangeSprite;
+    }
 }

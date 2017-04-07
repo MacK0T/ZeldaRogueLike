@@ -15,9 +15,7 @@ public class ShootController : MonoBehaviour
     private float _shootRange;
     [SerializeField]
     private int _shootDamage;
-    private IEnumerator _shootCor;
-    private bool _canShoot = true;
-    private bool _wantShoot = false;
+    private Coroutine _shootCor;
     private Vector2 _nowDirection;
 
     private void Awake()
@@ -40,44 +38,42 @@ public class ShootController : MonoBehaviour
         switch (dir)
         {
             case Directions.down:
-                _nowDirection = new Vector2(0, -1);
+                StartShooting(new Vector2(0, -1));
                 break;
             case Directions.right:
-                _nowDirection = new Vector2(1, 0);
+                StartShooting(new Vector2(1, 0));
                 break;
             case Directions.left:
-                _nowDirection = new Vector2(-1, 0);
+                StartShooting(new Vector2(-1, 0));
                 break;
             case Directions.up:
-                _nowDirection = new Vector2(0, 1);
+                StartShooting(new Vector2(0, 1));
                 break;
+            default:
+                Debug.LogError("not this direction[ShootController]");
+                    break;
         }
-        _shootCor = ShootDelay();
-        _wantShoot = true;
-        StartCoroutine(_shootCor);
     }
 
     public void StartShooting(Vector2 dir)
     {
         _nowDirection = dir;
-        _shootCor = ShootDelay();
-        _wantShoot = true;
-        StartCoroutine(_shootCor);
+        StopShooting();
+        _shootCor = StartCoroutine(ShootDelay());
     }
 
     public void StopShooting()
     {
-        _wantShoot = false;
+        if(_shootCor!=null)
+            StopCoroutine(_shootCor);
     }
 
     private IEnumerator ShootDelay()
     {
-        while (_canShoot && _wantShoot)
+        while (true)
         {
-            _canShoot = false;
             CreateBullet(_nowDirection);
             yield return new WaitForSeconds(_shootDelay);
-            _canShoot = true;
         }
     }
 

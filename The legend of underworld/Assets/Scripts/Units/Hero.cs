@@ -22,6 +22,15 @@ public class Hero : MonoBehaviour
     private HealthBar _healthUI;
 
 
+
+    private void ChangeHealthUI(int currHP, int delta)
+    {
+        _healthUI.UpdateHealth(currHP);
+    }
+
+    #region
+
+
     void Awake()
     {
         _health = GetComponent<Health>();
@@ -29,13 +38,22 @@ public class Hero : MonoBehaviour
         _moveCntr = GetComponent<MoveController>();
         _shootCntr = GetComponent<ShootController>();
         gameObject.AddComponent<UnityPoolManager>();
-        _healthUI = FindObjectOfType<Canvas>().GetComponent<GameUI>().healthBar;
-        _healthUI.SpawnHearts(_health.maxHealth, _health.health);
-        _health.onGetDamage += ChangeHealthUI;
     }
-	
 
-	private void Update()
+    private void Start()
+    {
+        _healthUI = FindObjectOfType<Canvas>().GetComponent<GameUI>().healthBar;
+        _healthUI.SpawnHearts(_health.maxValue, _health.value);
+        _health.onChanged += ChangeHealthUI;
+    }
+
+    private void OnDestroy()
+    {
+        _health.onChanged -= ChangeHealthUI;
+    }
+
+
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -63,34 +81,32 @@ public class Hero : MonoBehaviour
             _anim.SetInteger("Head", 0);
             _shootCntr.StopShooting();
         }
-
+        // переделать енумы на получение осей и функцию оюработчик
         _moveCntr.SetDirection(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
-
+        int bodyDirection = 0;
         if (Input.GetKeyDown(KeyCode.S))
         {
-            _anim.SetInteger("Body", 1);
+            bodyDirection = 1;
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            _anim.SetInteger("Body", 2);
+            bodyDirection = 2;
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            _anim.SetInteger("Body", 3);
+            bodyDirection = 3;
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            _anim.SetInteger("Body", 4);
+            bodyDirection = 4;
         }
         else if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) &&
             !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.D))
         {
-            _anim.SetInteger("Body", 0);
+            bodyDirection = 0;
         }
+        _anim.SetInteger("Body", bodyDirection);
     }
+    #endregion
 
-    private void ChangeHealthUI()
-    {
-        _healthUI.UpdateHealth(_health.health);
-    }
 }

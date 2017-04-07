@@ -6,22 +6,30 @@ public class Health : MonoBehaviour
     [SerializeField]
     private int _maxHealth;
     [SerializeField]
-    private int _currHealth;
+    private int _currentValue;
 
-    public delegate void OnGetDamage();
-    public event OnGetDamage onGetDamage;
-    public delegate void OnGetHeal();
-    public event OnGetHeal onGetHeal;
+    //public delegate void OnGetDamage();
+    //public event OnGetDamage onGetDamage;
+    //public delegate void OnGetHeal();
+    //public event OnGetHeal onGetHeal;
 
-    public int health
+    //public System.Action onGetDamage = delegate() { };
+    //public System.Action onGetHeal = delegate () { };
+    public event System.Action<int, int> onChanged = delegate { };
+
+    public int value
     {
         get
         {
-            return _currHealth;
+            return _currentValue;
+        }
+        private set
+        {
+            // вынести death
         }
     }
 
-    public int maxHealth
+    public int maxValue
     {
         get
         {
@@ -29,24 +37,24 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void Init(int maxHealth, int nowHealth=-1)
+    public void Init(int maxHealth)
+    {
+        Init(maxHealth, maxHealth);
+    }
+
+    public void Init(int maxHealth, int nowHealth)
     {
         _maxHealth = maxHealth;
-        if (nowHealth == -1)
-        {
-            _currHealth = maxHealth;
-        }
-        else
-        {
-            _currHealth = nowHealth;
-        }
-        if (_currHealth <= 0)
+        _currentValue = nowHealth;
+        if (_currentValue <= 0)
             Death();
     }
 
     public int ChangeValue(int delta)
     {
-        _currHealth += delta;
+        _currentValue += delta;
+        onChanged(_currentValue, delta);
+        /*
         if (delta < 0)
         {
             if (onGetDamage != null)
@@ -57,9 +65,10 @@ public class Health : MonoBehaviour
             if (onGetHeal != null)
                 onGetHeal();
         }
-        if (_currHealth <= 0)
+        */
+        if (_currentValue <= 0)
             Death();
-        return _currHealth;
+        return _currentValue;
     }
 
     private void Death()
