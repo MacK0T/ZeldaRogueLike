@@ -1,14 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum Directions
-{
-    down,
-    left,
-    right,
-    up
-}
-
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(MoveController))]
@@ -26,6 +18,11 @@ public class Hero : MonoBehaviour
     private void ChangeHealthUI(int currHP, int delta)
     {
         _healthUI.UpdateHealth(currHP);
+    }
+
+    private void ShootModificed()
+    {
+
     }
 
     #region
@@ -58,22 +55,22 @@ public class Hero : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             _anim.SetInteger("Head", 1);
-            _shootCntr.StartShooting(Directions.down);
+            _shootCntr.StartShooting(new Vector2(0, -1));
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             _anim.SetInteger("Head", 2);
-            _shootCntr.StartShooting(Directions.left);
+            _shootCntr.StartShooting(new Vector2(-1, 0));
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             _anim.SetInteger("Head", 3);
-            _shootCntr.StartShooting(Directions.up);
+            _shootCntr.StartShooting(new Vector2(0, 1));
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             _anim.SetInteger("Head", 4);
-            _shootCntr.StartShooting(Directions.right);
+            _shootCntr.StartShooting(new Vector2(1, 0));
         }
         else if (!Input.GetKey(KeyCode.DownArrow) && !Input.GetKey(KeyCode.LeftArrow) &&
             !Input.GetKey(KeyCode.UpArrow) && !Input.GetKey(KeyCode.RightArrow))
@@ -87,25 +84,30 @@ public class Hero : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             bodyDirection = 1;
+            _anim.SetInteger("Body", bodyDirection);
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
             bodyDirection = 2;
+            _anim.SetInteger("Body", bodyDirection);
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
             bodyDirection = 3;
+            _anim.SetInteger("Body", bodyDirection);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
             bodyDirection = 4;
+            _anim.SetInteger("Body", bodyDirection);
         }
         else if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) &&
             !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.D))
         {
             bodyDirection = 0;
+            _anim.SetInteger("Body", bodyDirection);
         }
-        _anim.SetInteger("Body", bodyDirection);
+        // прошлый код ломал анимацию движения
     }
     #endregion
 

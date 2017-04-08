@@ -74,7 +74,7 @@ public class Dungeon : MonoSingleton<Dungeon>
 	
 	public Room AddRoom(Room parent, int x, int y)
 	{
-        Debug.Log(x + " " + y);
+        //Debug.Log(x + " " + y);
 		Room room = new Room(parent, x, y);
 		rooms[x,y] = room;
 		return room;

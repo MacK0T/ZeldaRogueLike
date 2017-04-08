@@ -33,28 +33,6 @@ public class ShootController : MonoBehaviour
         _shootDamage = damage;
     }
 
-    public void StartShooting(Directions dir)
-    {
-        switch (dir)
-        {
-            case Directions.down:
-                StartShooting(new Vector2(0, -1));
-                break;
-            case Directions.right:
-                StartShooting(new Vector2(1, 0));
-                break;
-            case Directions.left:
-                StartShooting(new Vector2(-1, 0));
-                break;
-            case Directions.up:
-                StartShooting(new Vector2(0, 1));
-                break;
-            default:
-                Debug.LogError("not this direction[ShootController]");
-                    break;
-        }
-    }
-
     public void StartShooting(Vector2 dir)
     {
         _nowDirection = dir;
@@ -76,6 +54,8 @@ public class ShootController : MonoBehaviour
             yield return new WaitForSeconds(_shootDelay);
         }
     }
+    // изза оптимизация убралась проверка на то чтобы делей сохранялся еслимы отпускаем кнопку и нажимаем снова
+	// а коротюна не завершалась резко чтобымы могли знать прошло ли нужное нам время выстрела или нет
 
     private void CreateBullet(Vector2 direction)
     {
