@@ -1,42 +1,70 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public class Dungeon : MonoSingleton<Dungeon> 
+public enum RoomTypes: byte
 {
-	// Dungeon Rooms
-	public int DUNGEON_SIZE_X = 20;
-	public int DUNGEON_SIZE_Y = 20;
-	
-	// Size of 3D Model Prefab in World Space
-	public float ROOM_SIZE_X = 7.4375f; 
-	public float ROOM_SIZE_Z = 4.9375f;
+    normal,
+    treasure,
+    boss
+}
+
+
+public class Dungeon : SceneSingleton<Dungeon> 
+{
+    // размер мира в котором могут быть комнаты в количествах комнат
+    [SerializeField]
+	private int worldSizeX = 20;
+    [SerializeField]
+    private int worldSizeY = 20;
+
+    public int worldX
+    {
+        get
+        {
+            return worldSizeX;
+        }
+    }
+
+    public int worldY
+    {
+        get
+        {
+            return worldSizeX;
+        }
+    }
+
+    // Size of 2D Model Prefab in World Space
+    public const float RoomSizeX = 7.4375f;
+    public const float RoomSizeY = 4.9375f;
 	
 	// Demo Room Prefab
 	public GameObject RoomBasicPrefab; 
 	
 	// Room structure
 	public Room[,] rooms;
+    private Dictionary<RoomTypes, int> specialRooms;
+
 	
 	// Pointer to Boss Room "Demo" GameObject
-	private GameObject bossRoom;
+	private GameObject startRoom;
 	
 	public override void Init () 
 	{
 		GenerateDungeon();
         GenerateGameRooms();
-        
+
         // Camera looking at Boss Room for the demo
-        //Camera.main.transform.position = new Vector3(bossRoom.transform.position.x,10,bossRoom.transform.position.z - 10);
+        GetComponentInParent<GameManager>().StartGame(startRoom.transform.position);
 	}
 	
 	public void GenerateDungeon()
 	{
 		// Create room structure
-		rooms = new Room[DUNGEON_SIZE_X,DUNGEON_SIZE_Y];
+		rooms = new Room[worldSizeX, worldSizeY];
 		
 		// Create our first room at a random position
-		int roomX = Random.Range (0, DUNGEON_SIZE_X);
-		int roomY = Random.Range (0, DUNGEON_SIZE_Y);
+		int roomX = Random.Range (0, worldSizeX);
+		int roomY = Random.Range (0, worldSizeY);
 		
 		Room firstRoom = AddRoom(null, roomX,roomY); // null parent because it's the first node
 		
@@ -52,9 +80,9 @@ public class Dungeon : MonoSingleton<Dungeon>
 			if (room == null) continue;
 			
 			// Real world position
-			float worldX = room.x * ROOM_SIZE_X;
-			float worldZ = room.y * ROOM_SIZE_Z;
-            GameObject g = GameObject.Instantiate(RoomBasicPrefab,new Vector3(worldX, worldZ,0),RoomBasicPrefab.transform.rotation) as GameObject;
+			float worldX = room.x * RoomSizeX;
+			float worldZ = room.y * RoomSizeY;
+            GameObject g = GameObject.Instantiate(RoomBasicPrefab,new Vector3(worldX, worldZ, 0),RoomBasicPrefab.transform.rotation) as GameObject;
 			
 			// Add the room info to the GameObject main script (Demo)
 			GameRoom gameRoom = g.GetComponent<GameRoom>();
@@ -62,8 +90,8 @@ public class Dungeon : MonoSingleton<Dungeon>
 			
 			if (room.IsFirstNode()) 
 			{
-				bossRoom = g;
-				g.name = "Boss Room";
+				startRoom = g;
+				g.name = "Start Room";
 			}
 			else g.name = "Room " + room.x + " " + room.y;
 		}

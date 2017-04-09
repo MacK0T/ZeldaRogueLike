@@ -12,11 +12,15 @@ public class Hero : MonoBehaviour
     private ShootController _shootCntr;
     private Health _health;
     private HealthBar _healthUI;
+    
+    public event System.Action onDeath = delegate { };
 
-
-
-    private void ChangeHealthUI(int currHealth, int delta)
+    private void ChangeHealth(int currHealth, int delta)
     {
+        if (currHealth <= 0)
+        {
+            onDeath();
+        }
         _healthUI.UpdateHealth(currHealth);
     }
 
@@ -39,14 +43,14 @@ public class Hero : MonoBehaviour
 
     private void Start()
     {
-        _healthUI = GameManager.instance.mainUI.healthBar;
+        _healthUI = GameManager.Instance.mainUI.healthBar;
         _healthUI.SpawnHearts(_health.maxValue, _health.value);
-        _health.onChanged += ChangeHealthUI;
+        _health.onChanged += ChangeHealth;
     }
 
     private void OnDestroy()
     {
-        _health.onChanged -= ChangeHealthUI;
+        _health.onChanged -= ChangeHealth;
     }
 
 

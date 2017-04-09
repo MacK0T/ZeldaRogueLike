@@ -17,7 +17,8 @@ public class ShootController : MonoBehaviour
     private int _shootDamage;
     private Coroutine _shootCor;
     private Vector2 _nowDirection;
-
+    private float _nextShootTime;
+    
     private void Awake()
     {
         _heroPos = transform;
@@ -50,12 +51,11 @@ public class ShootController : MonoBehaviour
     {
         while (true)
         {
+            yield return new WaitWhile(() => _nextShootTime > Time.time);
             CreateBullet(_nowDirection);
-            yield return new WaitForSeconds(_shootDelay);
+            _nextShootTime = Time.time + _shootDelay;
         }
     }
-    // изза оптимизация убралась проверка на то чтобы делей сохранялся еслимы отпускаем кнопку и нажимаем снова
-	// а коротюна не завершалась резко чтобымы могли знать прошло ли нужное нам время выстрела или нет
 
     private void CreateBullet(Vector2 direction)
     {

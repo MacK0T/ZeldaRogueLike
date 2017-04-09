@@ -5,7 +5,6 @@ using System.Collections;
 public class SceneManager : MonoBehaviour {
     
     private ScreenFader _scenefader;
-    public GameObject sureexit { get; private set; }
     private float prevtime = 1;
 
     public void Load(int level)

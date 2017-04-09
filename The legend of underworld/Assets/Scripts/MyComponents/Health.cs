@@ -23,12 +23,6 @@ public class Health : MonoBehaviour
         {
             return _currentValue;
         }
-        private set
-        {
-            // вынести death
-            // как мне это сделать ведь меняем мы значение 
-            // _currentValue а если мы на него повесим сет то он перестанет быть видимым в инспекторе
-        }
     }
     
     public int maxValue
@@ -67,10 +61,5 @@ public class Health : MonoBehaviour
         }
         */
         return _currentValue;
-    }
-
-    private void Death()
-    {
-        Destroy(this.gameObject);
     }
 }
