@@ -26,9 +26,11 @@ public class Health : MonoBehaviour
         private set
         {
             // вынести death
+            // как мне это сделать ведь меняем мы значение 
+            // _currentValue а если мы на него повесим сет то он перестанет быть видимым в инспекторе
         }
     }
-
+    
     public int maxValue
     {
         get
@@ -46,8 +48,6 @@ public class Health : MonoBehaviour
     {
         _maxHealth = maxHealth;
         _currentValue = nowHealth;
-        if (_currentValue <= 0)
-            Death();
     }
 
     public int ChangeValue(int delta)
@@ -66,8 +66,6 @@ public class Health : MonoBehaviour
                 onGetHeal();
         }
         */
-        if (_currentValue <= 0)
-            Death();
         return _currentValue;
     }
 

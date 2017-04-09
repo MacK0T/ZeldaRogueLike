@@ -8,7 +8,15 @@ public class MoveController : MonoBehaviour
     private float _maxSpeed;
     private Rigidbody2D _mainRB;
     private Vector2 _direction;
-    
+
+    public Vector2 direction
+    {
+        get
+        {
+            return _direction;
+        }
+    }
+
     public float maxSpeed
     {
         get

@@ -15,9 +15,9 @@ public class Hero : MonoBehaviour
 
 
 
-    private void ChangeHealthUI(int currHP, int delta)
+    private void ChangeHealthUI(int currHealth, int delta)
     {
-        _healthUI.UpdateHealth(currHP);
+        _healthUI.UpdateHealth(currHealth);
     }
 
     private void ShootModificed()
@@ -28,7 +28,7 @@ public class Hero : MonoBehaviour
     #region
 
 
-    void Awake()
+    private void Awake()
     {
         _health = GetComponent<Health>();
         _anim = GetComponent<Animator>();
@@ -39,7 +39,7 @@ public class Hero : MonoBehaviour
 
     private void Start()
     {
-        _healthUI = FindObjectOfType<Canvas>().GetComponent<GameUI>().healthBar;
+        _healthUI = GameManager.instance.mainUI.healthBar;
         _healthUI.SpawnHearts(_health.maxValue, _health.value);
         _health.onChanged += ChangeHealthUI;
     }

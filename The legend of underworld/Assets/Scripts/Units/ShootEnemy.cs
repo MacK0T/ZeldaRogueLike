@@ -22,7 +22,11 @@ public class ShootEnemy : MonoBehaviour
     {
         while (true)
         {
-            Vector2 newDirertion = directions[Random.Range(0, directions.Length)];
+            Vector2 newDirertion;
+            do
+            {
+                newDirertion = directions[Random.Range(0, directions.Length)];
+            } while (_moveCntr.direction != null && newDirertion == _moveCntr.direction);
             _moveCntr.SetDirection(newDirertion);
             _shootCntr.StartShooting(newDirertion);
             yield return new WaitForSeconds(timeBetweenChangeDirection);
