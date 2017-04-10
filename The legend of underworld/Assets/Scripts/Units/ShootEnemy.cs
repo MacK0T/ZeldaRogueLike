@@ -44,7 +44,7 @@ public class ShootEnemy : MonoBehaviour
         _shootCntr = GetComponent<ShootController>();
     }
 
-    void Start ()
+    void Start()
     {
         _behaviorCor = StartCoroutine(RandomMove());
     }

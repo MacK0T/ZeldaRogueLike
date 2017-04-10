@@ -23,12 +23,61 @@ public class GameManager : TestSingleton<GameManager>
     public void StartGame(Vector3 roomPos)
     {
         MoveIntoRoom(roomPos);
-        player.transform.position = new Vector3(roomPos.x + (Dungeon.RoomSizeX / 2), roomPos.y + (Dungeon.RoomSizeY / 2), 0);
+        player.transform.position = new Vector3(roomPos.x + (Dungeon.RoomSizeX / 2), roomPos.y - (Dungeon.RoomSizeY / 2), 0);
+    }
+
+    public void PlayerChangeRoom(Collider2D enter, Collider2D exit, Vector2 direction)
+    {
+        if(enter.tag == "Player")
+        {
+            MoveIntoRoomAnim(2, )
+            exit.GetComponentInParent<GameRoom>().transform.position
+        }
     }
 
     public void MoveIntoRoom(Vector3 roomPos)
     {
-        _cameras.transform.position = new Vector3(roomPos.x + (Dungeon.RoomSizeX / 2), roomPos.y + (Dungeon.RoomSizeY / 2), 0);
+        _cameras.transform.position = new Vector3(roomPos.x + (Dungeon.RoomSizeX / 2), roomPos.y - (Dungeon.RoomSizeY / 2), 0);
+    }
+    
+    public IEnumerator MoveIntoRoomAnim(float slideTime, Vector3 startingPoint, Vector3 finalPoint)
+    {
+        float speedX = Mathf.Abs(finalPoint.x - startingPoint.x) / slideTime;
+        float speedY = Mathf.Abs(finalPoint.y - startingPoint.y) / slideTime;
+        bool vertical = false;
+        if (startingPoint.y == finalPoint.y)
+            vertical = true;
+        if(vertical)
+        {
+            if(startingPoint.y < finalPoint.y)
+            {
+                while (startingPoint.y >= finalPoint.y)
+                {
+                    _cameras.transform.localPosition = new Vector3(
+                    _cameras.transform.localPosition.x,
+                    _cameras.transform.localPosition.y + speedY * Time.deltaTime,
+                    _cameras.transform.localPosition.z);
+                    yield return null;
+                }
+            }
+            else
+            {
+                while (startingPoint.y <= finalPoint.y)
+                {
+                    _cameras.transform.localPosition = new Vector3(
+                    _cameras.transform.localPosition.x,
+                    _cameras.transform.localPosition.y - speedY * Time.deltaTime,
+                    _cameras.transform.localPosition.z);
+                    yield return null;
+                }
+            }
+        }
+        else
+        {
+
+        }
+        _cameras.transform.position = 
+        yield return new Wa
     }
     
     // должен ли я делать здоровье буличным чтоб гейм менеджер мог подписатся на события от компонента игрока

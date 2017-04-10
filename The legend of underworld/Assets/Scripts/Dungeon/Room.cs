@@ -4,18 +4,20 @@ using System.Collections;
 public class Room
 {
 	public int x;
-	public int y;
-	public Room parent;
+    public int y;
+    public int deep;
+    public Room parent;
 	public Room child1, child2;
 	private Dungeon dungeon;
 	
 	private static int MAX_TRIES = 8;
 	
-	public Room(Room _parent, int _x, int _y)
+	public Room(Room _parent, int _x, int _y, int _deep)
 	{
 		parent = _parent;
 		x = _x;
 		y = _y;
+        deep = _deep;
 		dungeon = Dungeon.instance;
 	}
 	
@@ -40,7 +42,8 @@ public class Room
 	
 	public void GenerateChildren()
 	{
-		if (NumChildren() == Random.Range(1,2)) return;
+        if (dungeon.alreadyCreate >= dungeon.maximumRooms) return;
+		if (NumChildren() == Random.Range(1,4)) return;
 		if (NumEmptyNeighbours() == 0) return;
 		
 		int dir_child_1 = GetValidDirection(1);

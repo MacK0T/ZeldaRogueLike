@@ -16,6 +16,25 @@ public class Dungeon : SceneSingleton<Dungeon>
 	private int worldSizeX = 20;
     [SerializeField]
     private int worldSizeY = 20;
+    [SerializeField]
+    private int maxRooms = 8;
+    private int _alreayCreate = 0;
+
+    public int alreadyCreate
+    {
+        get
+        {
+            return _alreayCreate;
+        }
+    }
+
+    public int maximumRooms
+    {
+        get
+        {
+            return maxRooms;
+        }
+    }
 
     public int worldX
     {
@@ -66,7 +85,7 @@ public class Dungeon : SceneSingleton<Dungeon>
 		int roomX = Random.Range (0, worldSizeX);
 		int roomY = Random.Range (0, worldSizeY);
 		
-		Room firstRoom = AddRoom(null, roomX,roomY); // null parent because it's the first node
+		Room firstRoom = AddRoom(null, roomX, roomY); // null parent because it's the first node
 		
 		// Generate childrens
 		firstRoom.GenerateChildren();
@@ -74,7 +93,9 @@ public class Dungeon : SceneSingleton<Dungeon>
 	
 	private void GenerateGameRooms()
 	{
-		// For each room in our matrix generate a 3D Model from Prefab
+        // For each room in our matrix generate a 3D Model from Prefab
+        int maxDeep = 0;
+        GameObject bossRoom = null;
 		foreach (Room room in rooms)
 		{
 			if (room == null) continue;
@@ -87,14 +108,24 @@ public class Dungeon : SceneSingleton<Dungeon>
 			// Add the room info to the GameObject main script (Demo)
 			GameRoom gameRoom = g.GetComponent<GameRoom>();
 			gameRoom.room = room;
-			
-			if (room.IsFirstNode()) 
-			{
-				startRoom = g;
-				g.name = "Start Room";
-			}
-			else g.name = "Room " + room.x + " " + room.y;
+
+            if (room.deep > maxDeep)
+            {
+                bossRoom = gameRoom.gameObject;
+                maxDeep = room.deep;
+            }
+
+            if (room.IsFirstNode())
+            {
+                startRoom = g;
+                g.name = "Start Room";
+            }
+            else
+            {
+                g.name = "Room " + room.x + " " + room.y;
+            }
 		}
+        bossRoom.name = "Boss Room";
 	}
 	
 	// Helper Methods
@@ -103,7 +134,16 @@ public class Dungeon : SceneSingleton<Dungeon>
 	public Room AddRoom(Room parent, int x, int y)
 	{
         //Debug.Log(x + " " + y);
-		Room room = new Room(parent, x, y);
+        _alreayCreate++;
+        Room room;
+        if (parent != null)
+        {
+            room = new Room(parent, x, y, parent.deep + 1);
+        }
+        else
+        {
+            room = new Room(parent, x, y, 0);
+        }
 		rooms[x,y] = room;
 		return room;
 	}

@@ -6,8 +6,8 @@ public class GameRoom : MonoBehaviour
 	[SerializeField]
 	private GameObject doorLeft, doorRight, doorTop, doorBottom;
 	public Room room;
-	
-	void Start () 
+
+	void Start() 
 	{
         // Remove walls if connected
         if (room.IsConnectedTo(room.GetLeft()))
