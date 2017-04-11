@@ -26,12 +26,14 @@ public class GameManager : TestSingleton<GameManager>
         player.transform.position = new Vector3(roomPos.x + (Dungeon.RoomSizeX / 2), roomPos.y - (Dungeon.RoomSizeY / 2), 0);
     }
 
-    public void PlayerChangeRoom(Collider2D enter, Collider2D exit, Vector2 direction)
+    public void PlayerChangeRoom(Collider2D enter, Vector2 direction)
     {
         if(enter.tag == "Player")
         {
-            MoveIntoRoomAnim(2, )
-            exit.GetComponentInParent<GameRoom>().transform.position
+            MoveIntoRoomAnim(2, _cameras.transform.position, 
+                new Vector3(_cameras.transform.position.x + direction.x * Dungeon.RoomSizeX,
+                _cameras.transform.position.y + direction.y * Dungeon.RoomSizeY,
+                _cameras.transform.position.z));
         }
     }
 
@@ -76,8 +78,7 @@ public class GameManager : TestSingleton<GameManager>
         {
 
         }
-        _cameras.transform.position = 
-        yield return new Wa
+        //yield return new Wa
     }
     
     // должен ли я делать здоровье буличным чтоб гейм менеджер мог подписатся на события от компонента игрока

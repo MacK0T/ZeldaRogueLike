@@ -14,7 +14,8 @@ public class GameRoom : MonoBehaviour
         {
             doorLeft.transform.GetChild(0).gameObject.SetActive(true);
             BoxCollider2D[] walls = doorLeft.GetComponentsInChildren<BoxCollider2D>();
-            for(int i = 0; i < walls.Length; i++)
+            walls[0].enabled = true;
+            for (int i = 1; i < walls.Length; i++)
             {
                 walls[i].enabled = false;
             }
@@ -23,7 +24,8 @@ public class GameRoom : MonoBehaviour
         {
             doorLeft.transform.GetChild(0).gameObject.SetActive(false);
             BoxCollider2D[] walls = doorLeft.GetComponentsInChildren<BoxCollider2D>();
-            for (int i = 0; i < walls.Length; i++)
+            walls[0].enabled = false;
+            for (int i = 1; i < walls.Length; i++)
             {
                 walls[i].enabled = true;
             }
@@ -33,7 +35,8 @@ public class GameRoom : MonoBehaviour
         {
             doorRight.transform.GetChild(0).gameObject.SetActive(true);
             BoxCollider2D[] walls = doorRight.GetComponentsInChildren<BoxCollider2D>();
-            for (int i = 0; i < walls.Length; i++)
+            walls[0].enabled = true;
+            for (int i = 1; i < walls.Length; i++)
             {
                 walls[i].enabled = false;
             }
@@ -42,7 +45,8 @@ public class GameRoom : MonoBehaviour
         {
             doorRight.transform.GetChild(0).gameObject.SetActive(false);
             BoxCollider2D[] walls = doorRight.GetComponentsInChildren<BoxCollider2D>();
-            for (int i = 0; i < walls.Length; i++)
+            walls[0].enabled = false;
+            for (int i = 1; i < walls.Length; i++)
             {
                 walls[i].enabled = true;
             }
@@ -52,7 +56,8 @@ public class GameRoom : MonoBehaviour
         {
             doorTop.transform.GetChild(0).gameObject.SetActive(true);
             BoxCollider2D[] walls = doorTop.GetComponentsInChildren<BoxCollider2D>();
-            for (int i = 0; i < walls.Length; i++)
+            walls[0].enabled = true;
+            for (int i = 1; i < walls.Length; i++)
             {
                 walls[i].enabled = false;
             }
@@ -61,7 +66,8 @@ public class GameRoom : MonoBehaviour
         {
             doorTop.transform.GetChild(0).gameObject.SetActive(false);
             BoxCollider2D[] walls = doorTop.GetComponentsInChildren<BoxCollider2D>();
-            for (int i = 0; i < walls.Length; i++)
+            walls[0].enabled = false;
+            for (int i = 1; i < walls.Length; i++)
             {
                 walls[i].enabled = true;
             }
@@ -71,7 +77,8 @@ public class GameRoom : MonoBehaviour
         {
             doorBottom.transform.GetChild(0).gameObject.SetActive(true);
             BoxCollider2D[] walls = doorBottom.GetComponentsInChildren<BoxCollider2D>();
-            for (int i = 0; i < walls.Length; i++)
+            walls[0].enabled = true;
+            for (int i = 1; i < walls.Length; i++)
             {
                 walls[i].enabled = false;
             }
@@ -80,7 +87,8 @@ public class GameRoom : MonoBehaviour
         {
             doorBottom.transform.GetChild(0).gameObject.SetActive(false);
             BoxCollider2D[] walls = doorBottom.GetComponentsInChildren<BoxCollider2D>();
-            for (int i = 0; i < walls.Length; i++)
+            walls[0].enabled = false;
+            for (int i = 1; i < walls.Length; i++)
             {
                 walls[i].enabled = true;
             }
