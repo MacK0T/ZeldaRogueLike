@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+struct SpriteHealth
+{
+    public Sprite stateSprite;
+    public int stateHealth;
+}
+
 [RequireComponent(typeof(Health))]
 [RequireComponent(typeof(SpriteRenderer))]
 public class DestroyableObject : MonoBehaviour
@@ -9,9 +16,7 @@ public class DestroyableObject : MonoBehaviour
     private SpriteRenderer _renderer;
     private Health _health;
     [SerializeField]
-    private Sprite[] _states;
-    [SerializeField]
-    private int[] _statesHealth;
+    private SpriteHealth[] _states;
 
 
     void Awake()
@@ -25,9 +30,9 @@ public class DestroyableObject : MonoBehaviour
     {
         for (int i = 0; _states.Length > i; i++)
         {
-            if (currentHealth >= _statesHealth[i])
+            if (currentHealth >= _states[i].stateHealth)
             {
-                _renderer.sprite = _states[i];
+                _renderer.sprite = _states[i].stateSprite;
                 break;
             }
         }

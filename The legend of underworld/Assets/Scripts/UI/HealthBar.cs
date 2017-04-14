@@ -9,7 +9,8 @@ public class HealthBar : MonoBehaviour
     private GameObject _heartPrefab;
     [SerializeField]
     private int hpPerHeart;
-    List<Image> hearts = new List<Image>();
+
+    private List<Image> _hearts = new List<Image>();
 	
 	public void SpawnHearts(int maxhealth, int currenthealth)
     {
@@ -23,27 +24,30 @@ public class HealthBar : MonoBehaviour
         {
             GameObject g = GameObject.Instantiate(_heartPrefab) as GameObject;
             g.transform.SetParent(this.transform, false);
-            hearts.Add(g.transform.GetChild(0).GetComponent<Image>());
+            _hearts.Add(g.transform.GetChild(0).GetComponent<Image>());
         }
     }
 
-    public void UpdateHealth(int newHealth)
+    public void UpdateHealth(int newHealth, int delta = 0)
     {
-        for (int i = 0; i < hearts.Count; i++)
+        for (int i = 0; i < _hearts.Count; i++)
         {
-            if (newHealth > hpPerHeart)
-            {
-                hearts[i].fillAmount = 1;
-            }
-            else if (newHealth <= 0)
-            {
-                hearts[i].fillAmount = 0;
-            }
-            else
-            {
-                hearts[i].fillAmount = (float) newHealth / hpPerHeart;
-            }
+            _hearts[i].fillAmount = Mathf.Clamp((float)newHealth / (float)hpPerHeart, 0f, 1f);
             newHealth -= hpPerHeart;
         }
+    }
+    
+    
+    private void Start()
+    {
+        var temp = GameManager.Instance.player.health;
+        SpawnHearts(temp.maxValue, temp.value);
+        temp.onChanged += UpdateHealth;
+    }
+
+    private void OnDestroy()
+    {
+        if(GameManager.Instance.player != null)
+        GameManager.Instance.player.health.onChanged -= UpdateHealth;
     }
 }

@@ -6,6 +6,7 @@ public class MoveController : MonoBehaviour
 {
     [SerializeField]
     private float _maxSpeed;
+
     private Rigidbody2D _mainRB;
     private Vector2 _direction;
 
@@ -14,6 +15,15 @@ public class MoveController : MonoBehaviour
         get
         {
             return _direction;
+        }
+
+        set
+        {
+            if (_direction != value)
+            {
+                _direction = value;
+                Move(_direction);
+            }
         }
     }
 
@@ -35,18 +45,15 @@ public class MoveController : MonoBehaviour
         _maxSpeed = spd;
     }
 
+    /*
     void FixedUpdate()
     {
         Move(_direction);
 	}
+    */
 
     void Move(Vector2 direction)
     {
         _mainRB.velocity = direction*_maxSpeed;
-    }
-
-    public void SetDirection(Vector2 direction)
-    {
-        _direction = direction;
     }
 }

@@ -2,7 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class ScreenFader : MonoBehaviour {
+[RequireComponent(typeof(Image))]
+public class ScreenFader : MonoBehaviour
+{
 
     public float _fadeTime = 1f;
     public bool _isFading { get; private set; }
@@ -11,7 +13,6 @@ public class ScreenFader : MonoBehaviour {
     private void Awake()
     {
         _image = gameObject.GetComponent<Image>();
-        _isFading = true;
         StartCoroutine(Fade(true));
     }
 

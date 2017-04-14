@@ -8,15 +8,19 @@ using UnityEngine;
 [RequireComponent(typeof(ShootController))]
 public class ShootEnemy : MonoBehaviour
 {
+    [SerializeField]
+    private float timeBetweenChangeDirection;
+    [SerializeField]
+    private Vector2[] directions;
+
     private Animator _anim;
     private MoveController _moveCntr;
     private ShootController _shootCntr;
     private Health _health;
     private Coroutine _behaviorCor;
-    [SerializeField]
-    private float timeBetweenChangeDirection;
-    [SerializeField]
-    private Vector2[] directions;
+
+    private const string _tagPlayerProperty = "Player";
+    private const string _tagTearProperty = "Tear";
 
     private IEnumerator RandomMove()
     {
@@ -26,8 +30,8 @@ public class ShootEnemy : MonoBehaviour
             do
             {
                 newDirertion = directions[Random.Range(0, directions.Length)];
-            } while (_moveCntr.direction != null && newDirertion == _moveCntr.direction);
-            _moveCntr.SetDirection(newDirertion);
+            } while (newDirertion == _moveCntr.direction);
+            _moveCntr.direction = newDirertion;
             _shootCntr.StartShooting(newDirertion);
             yield return new WaitForSeconds(timeBetweenChangeDirection);
         }
@@ -51,7 +55,7 @@ public class ShootEnemy : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Tear")
+        if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Tear"))
         {
 
         }

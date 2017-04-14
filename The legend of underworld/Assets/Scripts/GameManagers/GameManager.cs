@@ -92,21 +92,19 @@ public class GameManager : TestSingleton<GameManager>
         player = GetComponentInChildren<Hero>();
         sceneManager = GetComponentInChildren<SceneManager>();
         _cameras = Camera.main.transform.parent.gameObject;
+        gameObject.AddComponent<UnityPoolManager>();
     }
 
     private void Start()
     {
-
         player.onDeath += PlayerDeath;
-        //player. _health.onChanged += ChangeHealthUI;
+
     }
 
-    private void OnDestroy()
+    new void OnDestroy()
     {
         player.onDeath -= PlayerDeath;
-        // должен ли я в итоге снимать подписку на событие в момент дестроя,
-        // происходит ли дестрой этого объекта при смене сцены
-        //_health.onChanged -= ChangeHealthUI;
+        base.OnDestroy();
     }
 
 }

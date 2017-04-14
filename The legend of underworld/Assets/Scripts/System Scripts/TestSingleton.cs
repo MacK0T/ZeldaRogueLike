@@ -4,7 +4,7 @@ public class TestSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
 
-    public bool isDestroy = false;
+    public bool isDestroyOnLoad = false;
     //private static object _lock = new object();
     
 
@@ -33,7 +33,7 @@ public class TestSingleton<T> : MonoBehaviour where T : MonoBehaviour
                         var _anotherTemp = _instance as TestSingleton<T>;
                         //var _temp = _instance.gameObject.GetComponent<TestSingleton<T>>();
                         _instance.gameObject.name = "(singleton) " + typeof(T).ToString();
-                        if(_anotherTemp.isDestroy)
+                        if(_anotherTemp.isDestroyOnLoad)
                             DontDestroyOnLoad(_instance.gameObject);
                 }
 
