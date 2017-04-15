@@ -13,10 +13,9 @@ public class ShootEnemy : MonoBehaviour
     [SerializeField]
     private Vector2[] directions;
 
-    private Animator _anim;
+    //private Animator _anim;
     private MoveController _moveCntr;
     private ShootController _shootCntr;
-    private Health _health;
     private Coroutine _behaviorCor;
 
     private const string _tagPlayerProperty = "Player";
@@ -42,8 +41,7 @@ public class ShootEnemy : MonoBehaviour
 
     void Awake()
     {
-        _health = GetComponent<Health>();
-        _anim = GetComponent<Animator>();
+        //_anim = GetComponent<Animator>();
         _moveCntr = GetComponent<MoveController>();
         _shootCntr = GetComponent<ShootController>();
     }

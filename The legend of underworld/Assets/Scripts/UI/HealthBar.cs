@@ -8,13 +8,13 @@ public class HealthBar : MonoBehaviour
     [SerializeField]
     private GameObject _heartPrefab;
     [SerializeField]
-    private int hpPerHeart;
+    private int _hpPerHeart;
 
     private List<Image> _hearts = new List<Image>();
 	
 	public void SpawnHearts(int maxhealth, int currenthealth)
     {
-        AddHearts(maxhealth / hpPerHeart);
+        AddHearts(maxhealth / _hpPerHeart);
         UpdateHealth(currenthealth);
     }
 
@@ -32,8 +32,8 @@ public class HealthBar : MonoBehaviour
     {
         for (int i = 0; i < _hearts.Count; i++)
         {
-            _hearts[i].fillAmount = Mathf.Clamp((float)newHealth / (float)hpPerHeart, 0f, 1f);
-            newHealth -= hpPerHeart;
+            _hearts[i].fillAmount = Mathf.Clamp((float)newHealth / (float)_hpPerHeart, 0f, 1f);
+            newHealth -= _hpPerHeart;
         }
     }
     
@@ -47,7 +47,6 @@ public class HealthBar : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(GameManager.Instance.player != null)
         GameManager.Instance.player.health.onChanged -= UpdateHealth;
     }
 }

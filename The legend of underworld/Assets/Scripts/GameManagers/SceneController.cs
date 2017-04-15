@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(ScreenFader))]
-public class SceneManager : MonoBehaviour {
+public class SceneController : MonoBehaviour {
     
     private ScreenFader _scenefader;
-    private float prevtime = 1;
 
     public void Load(int level)
     {
@@ -22,7 +22,7 @@ public class SceneManager : MonoBehaviour {
 
     public void ReloadCurrent()
     {
-        StartCoroutine(ChangeLevel(Application.loadedLevel));
+        StartCoroutine(ChangeLevel(SceneManager.GetActiveScene().buildIndex));
     }
 
     public void CloseApplication()
@@ -41,7 +41,7 @@ public class SceneManager : MonoBehaviour {
     private IEnumerator ChangeLevel(int level)
     {
         yield return StartCoroutine(_scenefader.Fade(false));
-        Application.LoadLevel(level);
+        SceneManager.LoadScene(level);
     }
 
     void Awake()
